@@ -1,0 +1,1131 @@
+/* Cosmic Cleaner - Красивая мобильная версия */
+
+:root {
+    --primary-color: #00ccff;
+    --primary-dark: #0099cc;
+    --secondary-color: #ff00ff;
+    --secondary-dark: #cc00cc;
+    --danger-color: #ff3366;
+    --danger-dark: #cc0044;
+    --success-color: #00ff88;
+    --success-dark: #00cc66;
+    --warning-color: #ffaa00;
+    --warning-dark: #cc8800;
+    --dark-bg: #0a0a2a;
+    --darker-bg: #050510;
+    --light-text: #ffffff;
+    --medium-text: #a0a0ff;
+    --card-bg: rgba(10, 10, 40, 0.95);
+    --card-border: rgba(0, 204, 255, 0.4);
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    user-select: none;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Roboto', sans-serif;
+    background: var(--dark-bg);
+    color: var(--light-text);
+    position: fixed;
+}
+
+/* Фоновый космический градиент */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(0, 100, 255, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(255, 0, 255, 0.15) 0%, transparent 50%),
+        linear-gradient(135deg, #0a0a2a 0%, #1a1a40 50%, #0a0a2a 100%);
+    z-index: -1;
+}
+
+/* Звездный фон */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(1px 1px at 20% 30%, white 100%, transparent),
+        radial-gradient(1px 1px at 40% 70%, white 100%, transparent),
+        radial-gradient(2px 2px at 60% 20%, white 100%, transparent),
+        radial-gradient(1px 1px at 80% 50%, white 100%, transparent),
+        radial-gradient(2px 2px at 30% 80%, white 100%, transparent),
+        radial-gradient(1px 1px at 70% 90%, white 100%, transparent),
+        radial-gradient(2px 2px at 10% 10%, white 100%, transparent),
+        radial-gradient(1px 1px at 90% 60%, white 100%, transparent),
+        radial-gradient(2px 2px at 50% 40%, white 100%, transparent);
+    background-size: 200px 200px;
+    animation: stars-twinkle 4s infinite alternate;
+    z-index: -1;
+    opacity: 0.5;
+}
+
+@keyframes stars-twinkle {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.7; }
+}
+
+/* Контейнер для экранов */
+.screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    padding: 20px;
+    background: rgba(5, 5, 16, 0.8);
+    backdrop-filter: blur(10px);
+}
+
+.screen.active {
+    display: flex;
+}
+
+/* Анимация появления экранов */
+.screen.active {
+    animation: screen-appear 0.3s ease-out;
+}
+
+@keyframes screen-appear {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Загрузочный экран - улучшенный */
+.loading-content {
+    text-align: center;
+    padding: 30px;
+    background: var(--card-bg);
+    border-radius: 25px;
+    border: 2px solid var(--card-border);
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.5),
+        inset 0 0 20px rgba(0, 204, 255, 0.1);
+    max-width: 90%;
+    backdrop-filter: blur(20px);
+}
+
+.loader {
+    margin-bottom: 30px;
+}
+
+.spaceship {
+    font-size: 4rem;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    animation: spaceship-float 3s ease-in-out infinite;
+    text-shadow: 0 0 20px var(--primary-color);
+}
+
+@keyframes spaceship-float {
+    0%, 100% { 
+        transform: translateY(0) rotate(0deg); 
+    }
+    25% { 
+        transform: translateY(-10px) rotate(5deg); 
+    }
+    75% { 
+        transform: translateY(-5px) rotate(-5deg); 
+    }
+}
+
+.loading-bar {
+    width: 250px;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 0 auto;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.loading-progress {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    border-radius: 6px;
+    transition: width 0.3s ease;
+    box-shadow: 0 0 10px var(--primary-color);
+}
+
+.loading-text {
+    margin-top: 20px;
+    color: var(--medium-text);
+    font-size: 1.1rem;
+    animation: pulse-text 2s infinite;
+}
+
+@keyframes pulse-text {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+}
+
+/* Главное меню - красивая версия */
+.mobile-menu {
+    width: 100%;
+    max-width: 500px;
+    padding: 30px;
+    background: var(--card-bg);
+    border-radius: 30px;
+    border: 2px solid var(--card-border);
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.6),
+        inset 0 0 30px rgba(0, 204, 255, 0.1);
+    backdrop-filter: blur(20px);
+    position: relative;
+    overflow: hidden;
+}
+
+.mobile-menu::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(0, 204, 255, 0.1) 0%, transparent 70%);
+    z-index: -1;
+}
+
+.menu-header {
+    margin-bottom: 40px;
+    text-align: center;
+    position: relative;
+}
+
+.game-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 3rem;
+    font-weight: 900;
+    color: transparent;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    line-height: 1.2;
+    margin-bottom: 10px;
+    text-shadow: 0 0 30px rgba(0, 204, 255, 0.5);
+    letter-spacing: 1px;
+}
+
+.game-subtitle {
+    font-size: 1.3rem;
+    color: var(--medium-text);
+    font-weight: 300;
+    margin-bottom: 10px;
+}
+
+.menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.mobile-btn {
+    width: 100%;
+    padding: 20px;
+    border: none;
+    border-radius: 15px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.mobile-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.mobile-btn:hover::before,
+.mobile-btn:active::before {
+    opacity: 1;
+}
+
+.mobile-btn:active {
+    transform: scale(0.98);
+}
+
+.mobile-btn.primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: white;
+    box-shadow: 
+        0 5px 15px rgba(0, 102, 255, 0.4),
+        inset 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.mobile-btn.primary:active {
+    box-shadow: 
+        0 2px 8px rgba(0, 102, 255, 0.4),
+        inset 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.mobile-btn.secondary {
+    background: var(--glass-bg);
+    color: white;
+    border: 2px solid var(--glass-border);
+    backdrop-filter: blur(10px);
+}
+
+.mobile-btn.secondary:active {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.menu-stats {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+    background: var(--glass-bg);
+    border-radius: 20px;
+    padding: 20px;
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(10px);
+}
+
+.stat-item {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.stat-item i {
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    filter: drop-shadow(0 0 5px var(--primary-color));
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--medium-text);
+    margin-bottom: 4px;
+}
+
+.stat-value {
+    display: block;
+    font-size: 1.4rem;
+    font-weight: 700;
+    font-family: 'Orbitron', sans-serif;
+    color: white;
+}
+
+.game-tip {
+    background: linear-gradient(135deg, rgba(255, 0, 255, 0.1), rgba(0, 204, 255, 0.1));
+    border-radius: 15px;
+    padding: 15px;
+    border: 1px solid var(--card-border);
+    text-align: center;
+}
+
+.game-tip p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: var(--medium-text);
+    font-size: 1rem;
+}
+
+/* Игровой экран - красивый интерфейс */
+#gameScreen {
+    flex-direction: column;
+    padding: 0;
+    background: rgba(5, 5, 16, 0.9);
+}
+
+.game-header {
+    width: 100%;
+    padding: 15px 20px;
+    background: rgba(5, 5, 16, 0.95);
+    border-bottom: 2px solid var(--primary-color);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.stats-bar {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.stat-circle {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--glass-bg);
+    border-radius: 20px;
+    padding: 12px;
+    border: 1px solid var(--glass-border);
+    min-height: 65px;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.stat-circle:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 204, 255, 0.2);
+}
+
+.stat-icon {
+    width: 45px;
+    height: 45px;
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 10px var(--primary-color);
+}
+
+.stat-icon i {
+    font-size: 1.3rem;
+    color: white;
+}
+
+.stat-info {
+    flex: 1;
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--medium-text);
+    margin-bottom: 2px;
+}
+
+.stat-value {
+    display: block;
+    font-size: 1.3rem;
+    font-weight: 700;
+    font-family: 'Orbitron', sans-serif;
+    color: white;
+}
+
+.power-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.power-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: var(--medium-text);
+    min-width: 85px;
+}
+
+.power-label i {
+    color: var(--warning-color);
+    filter: drop-shadow(0 0 5px var(--warning-color));
+}
+
+.power-container {
+    flex: 1;
+    height: 14px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 7px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.power-fill {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--warning-color), #ffdd00);
+    border-radius: 7px;
+    transition: width 0.3s ease;
+    box-shadow: 0 0 10px var(--warning-color);
+}
+
+/* Игровая область - красивый canvas */
+.game-area {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    overflow: hidden;
+    position: relative;
+}
+
+.game-area::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(0, 100, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(255, 0, 255, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+#gameCanvas {
+    display: block;
+    background: var(--darker-bg);
+    border-radius: 15px;
+    border: 3px solid var(--card-border);
+    box-shadow: 
+        0 0 30px rgba(0, 200, 255, 0.3),
+        inset 0 0 30px rgba(0, 0, 0, 0.5);
+    touch-action: none;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/* Улучшенное мобильное управление */
+.mobile-controls {
+    width: 100%;
+    padding: 20px;
+    background: rgba(5, 5, 16, 0.95);
+    border-top: 2px solid var(--primary-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    z-index: 5;
+    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.5);
+}
+
+.joystick-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 45%;
+}
+
+.joystick-base {
+    width: 140px;
+    height: 140px;
+    background: var(--glass-bg);
+    border-radius: 50%;
+    border: 2px solid var(--glass-border);
+    position: relative;
+    touch-action: none;
+    backdrop-filter: blur(10px);
+    box-shadow: 
+        0 10px 20px rgba(0, 0, 0, 0.3),
+        inset 0 0 20px rgba(255, 255, 255, 0.05);
+}
+
+.joystick {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.8rem;
+    box-shadow: 
+        0 5px 15px rgba(0, 204, 255, 0.5),
+        inset 0 0 10px rgba(255, 255, 255, 0.2);
+    user-select: none;
+    touch-action: none;
+    cursor: move;
+    transition: transform 0.1s ease;
+}
+
+.joystick:active {
+    transform: translate(-50%, -50%) scale(0.95);
+}
+
+.joystick-label {
+    font-size: 0.9rem;
+    color: var(--medium-text);
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    text-shadow: 0 0 5px var(--primary-color);
+}
+
+.action-buttons {
+    width: 55%;
+    display: flex;
+    gap: 15px;
+}
+
+.action-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.action-btn {
+    height: 80px;
+    border: none;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: white;
+    font-size: 0.85rem;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.action-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.action-btn:active {
+    transform: scale(0.95);
+}
+
+.action-btn:active::before {
+    opacity: 1;
+}
+
+.action-btn.boost {
+    background: linear-gradient(135deg, var(--danger-color), var(--danger-dark));
+    box-shadow: 
+        0 5px 15px rgba(255, 51, 102, 0.4),
+        inset 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.action-btn.magnet {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    box-shadow: 
+        0 5px 15px rgba(0, 204, 255, 0.4),
+        inset 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.action-btn.shield {
+    background: linear-gradient(135deg, #aa00ff, #6600cc);
+    box-shadow: 
+        0 5px 15px rgba(170, 0, 255, 0.4),
+        inset 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.action-btn.pause {
+    background: linear-gradient(135deg, var(--warning-color), var(--warning-dark));
+    box-shadow: 
+        0 5px 15px rgba(255, 170, 0, 0.4),
+        inset 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.action-btn i {
+    font-size: 1.8rem;
+    filter: drop-shadow(0 0 5px currentColor);
+}
+
+.action-btn span {
+    text-shadow: 0 0 5px currentColor;
+}
+
+/* Попап меню - красивый дизайн */
+.popup-menu {
+    width: 90%;
+    max-width: 400px;
+    background: var(--card-bg);
+    border-radius: 30px;
+    padding: 30px;
+    border: 2px solid var(--card-border);
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.7),
+        inset 0 0 30px rgba(0, 204, 255, 0.1);
+    backdrop-filter: blur(20px);
+    position: relative;
+    overflow: hidden;
+}
+
+.popup-menu::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(0, 204, 255, 0.1) 0%, transparent 70%);
+    z-index: -1;
+}
+
+.popup-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.popup-header i {
+    font-size: 4rem;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    display: block;
+    filter: drop-shadow(0 0 20px currentColor);
+    animation: icon-float 3s ease-in-out infinite;
+}
+
+@keyframes icon-float {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-10px) scale(1.05); }
+}
+
+.popup-header h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2rem;
+    color: white;
+    text-shadow: 0 0 20px var(--primary-color);
+}
+
+.popup-header.game-over i {
+    color: var(--danger-color);
+}
+
+.popup-header.victory i {
+    color: var(--warning-color);
+}
+
+.popup-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.popup-btn {
+    width: 100%;
+    padding: 20px;
+    border: none;
+    border-radius: 15px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.popup-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.popup-btn:active {
+    transform: scale(0.98);
+}
+
+.popup-btn:active::before {
+    opacity: 1;
+}
+
+.popup-btn.primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: white;
+    box-shadow: 
+        0 5px 15px rgba(0, 102, 255, 0.4),
+        inset 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.popup-btn.secondary {
+    background: var(--glass-bg);
+    color: white;
+    border: 2px solid var(--glass-border);
+    backdrop-filter: blur(10px);
+}
+
+.current-stats {
+    background: var(--glass-bg);
+    border-radius: 20px;
+    padding: 20px;
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(10px);
+}
+
+.current-stat {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    color: var(--medium-text);
+    font-size: 1.1rem;
+}
+
+.current-stat:last-child {
+    margin-bottom: 0;
+}
+
+.current-stat i {
+    color: var(--primary-color);
+    width: 25px;
+    font-size: 1.2rem;
+    filter: drop-shadow(0 0 5px var(--primary-color));
+}
+
+.current-stat strong {
+    color: white;
+    margin-left: auto;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.3rem;
+}
+
+/* Статистика результатов */
+.result-stats {
+    margin-bottom: 30px;
+}
+
+.result-stat {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: var(--glass-bg);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 15px;
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease;
+}
+
+.result-stat:hover {
+    transform: translateY(-5px);
+}
+
+.result-stat:last-child {
+    margin-bottom: 0;
+}
+
+.result-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 20px var(--primary-color);
+}
+
+.result-icon i {
+    font-size: 1.8rem;
+    color: white;
+}
+
+.result-info {
+    flex: 1;
+}
+
+.result-label {
+    display: block;
+    font-size: 1rem;
+    color: var(--medium-text);
+    margin-bottom: 5px;
+}
+
+.result-value {
+    display: block;
+    font-size: 1.8rem;
+    font-weight: 700;
+    font-family: 'Orbitron', sans-serif;
+    color: white;
+    text-shadow: 0 0 10px var(--primary-color);
+}
+
+.personal-best {
+    border: 2px solid var(--warning-color);
+    background: linear-gradient(135deg, rgba(255, 170, 0, 0.1), rgba(255, 170, 0, 0.05));
+}
+
+.personal-best .result-icon {
+    background: linear-gradient(135deg, var(--warning-color), var(--warning-dark));
+    box-shadow: 0 0 20px var(--warning-color);
+}
+
+/* Экран победы */
+.victory-stats {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.victory-stat {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 25px;
+    font-size: 1.4rem;
+    color: var(--success-color);
+    text-shadow: 0 0 10px var(--success-color);
+}
+
+.victory-stat i {
+    font-size: 2rem;
+    filter: drop-shadow(0 0 10px var(--success-color));
+}
+
+.victory-details {
+    background: var(--glass-bg);
+    border-radius: 20px;
+    padding: 25px;
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(10px);
+}
+
+.victory-detail {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.victory-detail:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.detail-label {
+    color: var(--medium-text);
+    font-size: 1.1rem;
+}
+
+.detail-value {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    text-shadow: 0 0 10px var(--primary-color);
+}
+
+/* Медиа-запросы для адаптации */
+@media (max-height: 700px) {
+    .game-title {
+        font-size: 2.5rem;
+    }
+    
+    .mobile-btn {
+        padding: 16px;
+        font-size: 1.2rem;
+    }
+    
+    .stat-circle {
+        padding: 10px;
+        min-height: 55px;
+    }
+    
+    .joystick-base {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .joystick {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+    }
+    
+    .action-btn {
+        height: 70px;
+        font-size: 0.8rem;
+    }
+    
+    .action-btn i {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-height: 600px) {
+    .game-header {
+        padding: 12px 15px;
+    }
+    
+    .stats-bar {
+        gap: 8px;
+    }
+    
+    .game-area {
+        padding: 10px;
+    }
+    
+    .mobile-controls {
+        padding: 15px;
+        gap: 15px;
+    }
+    
+    .joystick-container {
+        width: 40%;
+    }
+    
+    .action-buttons {
+        width: 60%;
+    }
+}
+
+@media (max-width: 350px) {
+    .game-title {
+        font-size: 2rem;
+    }
+    
+    .mobile-btn {
+        padding: 14px;
+        font-size: 1.1rem;
+    }
+    
+    .stat-circle {
+        padding: 8px;
+    }
+    
+    .stat-icon {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .stat-icon i {
+        font-size: 1.1rem;
+    }
+}
+
+/* Анимации */
+@keyframes pulse {
+    0%, 100% { 
+        transform: scale(1); 
+        opacity: 1;
+    }
+    50% { 
+        transform: scale(1.05); 
+        opacity: 0.8;
+    }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.pulse {
+    animation: pulse 1s ease infinite;
+}
+
+.shake {
+    animation: shake 0.5s ease;
+}
+
+/* Эффект свечения для важных элементов */
+.glow {
+    text-shadow: 0 0 10px currentColor;
+}
+
+/* Эффект нажатия */
+.press-effect {
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.press-effect:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Эффект параллакса для фона */
+.parallax-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(0, 100, 255, 0.2) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(255, 0, 255, 0.2) 0%, transparent 50%);
+    animation: parallax-move 20s infinite linear;
+}
+
+@keyframes parallax-move {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(-50px, -50px); }
+}
